@@ -1,0 +1,358 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    // font-family: 'Tempus sans ITC';
+    font-family: 'Underdog', cursive;
+    color: white;
+}
+body{
+    width: 100vw;
+    height: 100vh;
+    background: #222;
+}
+@mixin flex{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.wrapper{
+    background-image: linear-gradient(#333, #999, #111);
+    background-color: #333;
+    
+    // background-image: url('assets/imgs/mud.jpg');
+    // background-size: cover;
+    // background-position: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    @include flex;
+    flex-direction: column;
+    border: 4px solid #888;
+    
+}
+.dragon-img1, .dragon-img2{
+    
+    height: 70%;
+    width: auto;
+    margin: 3em;
+}
+.dragon-img1{
+    position: absolute;
+    left: 0;
+    
+    height: 50%;
+    width: auto;
+    
+}
+.dragon-img2{
+    position: absolute;
+    right: 0;
+    transform: rotateY(180deg);
+}
+.dial-window{
+    position: absolute;
+    top: 50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    height: 90%;
+    background-color: #555;
+    background-image: url('assets/imgs/paper2.jpg');
+    border: 2px solid #222;
+    z-index: 2;
+    @include flex;
+    flex-direction: column;
+    box-shadow: 0 0 2em 15em rgba(0,0,0,.5);
+    // zamiast box shadowa mozesz zwiekszyc dial na 100% ekranu i dac mu transparentny background
+    h1{
+        width: 90%;
+        text-align: center;
+        padding: .5em;
+        font-weight: 700;
+        letter-spacing: .5em;
+        text-shadow: 0 0 20px orangered;
+        // background-image: url('assets/imgs/wood3.jpg');
+        // background-size: cover;
+        background-color: rgba(0,0,0,.3);
+        
+    }
+}
+.menu-nav{
+    @include flex;
+    flex-direction: column;
+    width: 50%;
+    z-index: 0;
+    button{
+        transition: color .4s ease, width .4s ease, letter-spacing .6s ease, font-weight .4s ease;
+        width: 20%;
+        &:hover{
+            width: 30%;
+            // transform: scaleY(1.2);
+            letter-spacing: 5px;
+            font-weight: 700;
+        }
+    }
+}
+.fightscreen{
+    @include flex;
+    width: 90%;
+    height: 70%;
+    border: 2px solid orange;
+}
+.dragon{
+    @include flex;
+    flex-direction: column;
+    width: 40%;
+    height: 100%;
+    margin: 3em;
+    border: 1px solid orange;
+    color: white;
+    h1{
+        margin: .5em;
+        font-size: 2em;
+    }
+}
+.stats{
+    @include flex;
+    flex-direction: column;
+    border: 2px solid orange;
+    width: 50%;
+    height: 10%;
+    margin: 1em;
+}
+.hp, .stamina{
+    width: 80%;
+    height: 40%;
+    border-radius: 10px;
+    border: 1px solid black;
+    overflow:hidden;
+    text-align: center;
+    margin: 2px;
+    position: relative;
+    z-index: 5;
+    p{
+        position: absolute;
+        z-index: 4;
+        width: 100%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+    }
+}
+
+.hp-bar{
+    width: 100%;
+    height: 100%;
+    // zmien na gradienty zeby bylo extra
+    background-color: darkred;
+    position: absolute;
+    top: 0;
+    left:0;
+    z-index: 3;
+    
+    
+    
+}
+.stamina-bar{
+    width: 100%;
+    height: 100%;
+    background: green;
+}
+.visage{
+    width: 50%;
+    height: 50%;
+    border: 1px solid red;
+    background-size: cover;
+
+}
+.win-screen{
+    z-index: 10;
+    // position: absolute;
+    // top: 50%;
+    // left:50%;
+    // transform: translate(-50%, -50%);
+
+}
+.navigation{
+    @include flex;
+    // justify-content: space-between;
+    width: 90%;
+    height: 10%;
+    margin-top: 1em;
+    border: 2px solid red;
+}
+// BUTTON -----------------------------------------------------------------------------------------------
+.btn{
+    outline: none;
+    padding: 5px;
+    margin: .5em;
+    font-size: 1.2em;
+    color: white;
+    // background: rgba(0,0,0,.3);
+    // background-image: linear-gradient(red, yellow, red);
+    background-image: url('assets/imgs/wood.jpg');
+    // background-size: cover;
+    background-position: center;
+    border: 2px solid rgb(70, 54, 26);
+    overflow: hidden;
+    border-radius: 3px;
+    box-shadow: 0 0 20px 0 #333;
+    transition: font-weight .3s ease, color .3s ease;
+    cursor: pointer;
+    &:hover{
+        
+        // letter-spacing: 3px;
+        color: orangered;
+        font-weight: 700;
+    }
+    
+}
+
+// hodowla
+.nest{
+    background-image: url('assets/icons/egg-clutch.png'), url('assets/imgs/paper2.jpg');
+    background-repeat: no-repeat;
+    background-size: 50%, cover;
+    
+
+}
+.navbar{
+    position: absolute;
+    width: 20%;
+    height: 100%;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+}
+.navbar-left{
+    
+    top: 0;
+    left: 0;
+    h1{
+        text-align: center;
+    }
+}
+.navbar-right{
+    top: 0;
+    right: 0;
+}
+.breeds{
+    display: grid;
+    border: 1px solid gray;
+    margin: .5em;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    // grid-template-rows: 1fr 1fr 1fr 1fr;
+    
+}
+.dragon-breed{
+    background: rgba(0,0,0,.3);
+    margin: .2em;
+    border: 1px solid gray;
+    width: 60px;
+    height: 60px;
+    background-image: url('assets/icons/spiked-dragon-head-empty.png');
+    background-size: cover;
+    cursor: pointer;
+}
+.dragon-visage{
+    width: 200px;
+    height: 200px;
+    background-size: cover;
+}
+.dragon-red{
+    background-image: url('assets/icons/spiked-dragon-head-red.png');
+}
+.dragon-green{
+    background-image: url('assets/icons/spiked-dragon-head-green.png');
+}
+.dragon-blue{
+    background-image: url('assets/icons/spiked-dragon-head-blue.png');
+}
+.dragon-sand{
+    background-image: url('assets/icons/dragon-head-sand.png');
+}
+
+.see-dragon-stats{
+    p{
+        font-size: 1.5em;
+    }
+}
+.dracon-footer{
+
+}
+.active{
+    // background-color: rgba(0, 255, 0, 0.7);
+    border: 1px solid red;
+    filter: brightness(1.75);
+}
+// expedition
+.map-scr{
+    @include flex;
+    width: 90%;
+    height: 80%;
+    // border: 1px solid black;
+    position: relative;
+    background-color: rgba(0,0,0,.3);
+    
+}
+.map-nav{
+    @include flex;
+    flex-direction: column;
+    margin: .5em;
+    width: 20%;
+    button{
+        width: 100%;
+    }
+}
+.dinosaur-bones{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 10%;
+    height: auto;
+}
+.compass{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 10%;
+    height: auto;
+}
+
+
+.resource-img{
+        width: 3em;
+        height: 3em;
+        background-color: rgba(0,0,0,.3);
+}
+
+.summits, .spinal, .book, .eggs, .pile{
+    opacity: .5;
+    height: 100%;
+    width: auto;
+    position: absolute;
+    top:0;
+    left:0;
+    z-index:0;
+}
+// rgb 255,237,186 jasne / rgb 145,93,0 ciemne
+.map{
+    width: 70%;
+    height: 90%;
+    border: 1px solid black;
+    margin: .5em;
+    background-image: url('assets/Ethenor1.png');
+    background-size: cover;
+}
+
+
+// transitions vue
+.fade-enter-active, .fade-leave-active {
+    transition: opacity .5s;
+  }
+  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    opacity: 0;
+  }

@@ -1,0 +1,260 @@
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="main.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Underdog&display=swap&subset=latin-ext" rel="stylesheet">
+    <title>Dragon Warriors</title>
+</head>
+<body>
+    
+    <div id="app">
+<!-- MENU ------------------------------------------ -->
+        <div class="wrapper menu-screen">
+            <img class="dragon-img1" src="assets/imgs/21-dragon-png-images-drago-picture.png" alt="dragon">
+            <img class="dragon-img2" src="assets/imgs/18-green-dragon-png-images-drago-picture.png" alt="dragon">
+            <h1>Dragon Warriors</h1>
+            <div class="menu-nav">
+                
+                <button class="btn" @click="breeding=true">Hodowla</button>
+                <button class="btn" @click="arenaFight">Arena</button>
+                <button class="btn" @click="shopWindow=true">Sklep</button>
+            </div>
+        </div> 
+
+<!-- SHOP ------------------------------------------ -->
+    <transition name="fade">
+        <div class="wrapper shop-screen" v-if="shopWindow">
+            <h1>Sklep</h1>
+            <p>Witaj w sklepie</p>
+            <p>work in progress...</p>
+            <button class="btn" @click="shopWindow=false">Wyjdź</button>
+        </div>
+    </transition>
+<!-- FIGHT SCREEN ---------------------------------  -->
+        <div class="wrapper fight" v-if="fight">
+            <div class="dial-window win-screen" v-if="win">
+                <h1>Wygrałeś Walkę</h1>
+                <p>Twoje nagrody to:</p>
+                <button class="btn" @click="collectPrizes">Zbierz i wróć do hodowli</button>
+            </div>
+
+            <div class="dial-window defeat-screen" v-if="defeat">
+                    <h1>Twój smok przegrał walkę!</h1>
+                    <p>Tracisz złoto</p>
+                    <p>Ulecz swego smoka, by mógł walczyć dalej.</p>
+                    <button class="btn" @click="defeatAccept">Akceptuj Porażkę i wróć do hodowli</button>
+            </div>
+
+            <div class="fightscreen">
+<!-- PLAYER----------------------------------------- -->
+<!-- wszystkie te klasy np player-stats mogą okazać się zbędne, jak będę v-bindował elementy z danymi -->
+
+<!-- USTAW WSZYSTKIE DANE NA SMOKA AKTUALNIE WALCZĄCEGO!!! -->
+                <div class="dragon player">
+                    <!-- <h1>{{ yourDragons[activeDragon].name }}</h1> -->
+                    <h1>{{ player.name }}</h1>
+                    <!-- zmien tu na race.visage czy jakoś -->
+                    <div class="visage player-visage" v-bind:style="{backgroundImage:player.image}"></div>
+
+                    <div class="stats player-stats">
+                        <div class="hp player-hp">
+                            <p>Zdrowie: {{ player.hp }} / {{ player.maxHp }}</p> 
+                            <div class="hp-bar player-hp-bar" v-bind:style="{width:player.hpPercent +'%'}"></div>
+                        </div>
+
+                        <div class="stamina player-stamina">
+                            <div class="stamina-bar player-stamina-bar">Kondycja: {{ player.stamina }} / {{ player.maxStamina }}</div>
+                        </div>
+                    </div>
+
+                </div>
+<!-- OPPONENT ---------------------------------------- -->
+                <div class="dragon opponent">
+                    <h1>{{ opponent.name }}</h1>
+                    <div class="visage opp-visage" v-bind:style="{backgroundImage:opponent.image}"></div>
+
+                    <div class="stats opp-stats">
+                        <div class="hp opp-hp">
+                            <p>Zdrowie: {{ opponent.hp }} / {{ opponent.maxHp }}</p>
+                            <!-- daj tu jakiegos ifa czy vbinda nie wiem, zeby zmniejszalo %width healthbara -->
+                            <div class="hp-bar opp-hp-bar" v-bind:style="{width:opponent.hpPercent +'%'}"></div>
+                        </div>
+
+                        <div class="stamina opp-stamina">
+                            <div class="stamina-bar opp-stamina-bar">Kondycja: {{ opponent.stamina }} / {{ opponent.maxStamina }}</div>
+                        </div>
+                    </div>
+
+                </div>
+                
+            </div>
+<!-- NAVIGATION FIGHT ---------------------------------------- -->
+            <nav class="navigation">
+                <button class="btn skills">Umiejętności</button>
+                <button class="btn main-attack" @click="attack">Atak: {{ player.mainAttack }}</button>
+                <button class="btn special-attack">Atak Specjalny: {{ player.specialAttack }}</button>
+                <button class="btn defence">Defensywa</button>
+                <!-- tu wstaw funkcje poddania sie, utraty kasy itp -->
+                <button class="btn" @click="fight=false">Poddaj się</button>
+            </nav>
+        </div>
+
+
+
+<!-- HODOWLA ---------------------------------------------- -->
+<transition name="fade">
+        <div class="wrapper breeding" v-if="breeding">
+            <h1>Hodowla</h1>
+            <div class="navbar navbar-left">
+                <button class="btn" @click="draconologyWindow=!draconologyWindow">Drakonologia</button>
+                <button class="btn" @click="resourcesWindow=!resourcesWindow">Zasoby</button>
+                <button class="btn" @click="expeditionWindow=!expeditionWindow">Ekspedycje</button>
+                <button class="btn" @click="nestWindow=!nestWindow">Gniazdo</button>
+                <!-- SMOKI -->
+                <h1>Twoje smoki:</h1>
+                <div class="breeds">
+                    <!-- ikonka smoka -->
+                    <!-- wstaw tu 8 przyciskow jako sloty na smoki -->
+                    <!-- zmien ikonke na kolorową jak bedzie smok w srodku -->
+                    <!-- zmieniaj background -->
+                    
+                    
+                    <!-- wybierz smoka - otwiera ekran, w ktorym są dostepne klatki ze schwytanymi smokami
+                    po akceptowaniu, dodaje odpowiednią klasę, i ustawia parametry smoka
+                    -->
+                    <button class="dragon-breed" @click="seeDragon(0)" v-bind:style="{backgroundImage:yourDragons[0].image}" v-bind:class="{active: yourDragons[0].fighter}"></button>
+                    <button class="dragon-breed" @click="seeDragon(1)" v-bind:style="{backgroundImage:yourDragons[1].image}" v-bind:class="{active: yourDragons[1].fighter}"></button>
+                    <button class="dragon-breed" @click="seeDragon(2)" v-bind:style="{backgroundImage:yourDragons[2].image}" v-bind:class="{active: yourDragons[2].fighter}"></button>
+                    <button class="dragon-breed" @click="seeDragon(3)" v-bind:style="{backgroundImage:yourDragons[3].image}" v-bind:class="{active: yourDragons[3].fighter}"></button>
+                    <!-- i tak dalej xd -->
+
+                    <button class="dragon-breed" @click="seeDragon(4)" v-bind:style="{backgroundImage:yourDragons[4].image}" v-bind:class="{active: yourDragons[4].fighter}"></button>
+                    <button class="dragon-breed" @click="seeDragon(5)" v-bind:style="{backgroundImage:yourDragons[5].image}" v-bind:class="{active: yourDragons[5].fighter}"></button>
+                    <button class="dragon-breed" @click="seeDragon(6)" v-bind:style="{backgroundImage:yourDragons[6].image}" v-bind:class="{active: yourDragons[6].fighter}"></button>
+                    <button class="dragon-breed" @click="seeDragon(7)" v-bind:style="{backgroundImage:yourDragons[7].image}" v-bind:class="{active: yourDragons[7].fighter}"></button>
+                    
+                </div>
+            </div>
+<!-- OKNO SMOKA PODGLAD --------------------------- -->
+    <transition name="fade">
+            <div class="dial-window see-dragon" v-if="seeDragonWindow">
+
+                <div class="see-dragon-stats">
+                        <h1>{{ yourDragons[chosenDragon].name }}</h1>
+                        <p>Rasa: {{ yourDragons[chosenDragon].race }}</p>
+                        <p>Zdrowie : {{ yourDragons[chosenDragon].hp }}  / {{ yourDragons[chosenDragon].maxHp }}</p>
+                        <p>Kondycja : {{ yourDragons[chosenDragon].stamina }} / {{ yourDragons[chosenDragon].maxStamina }}</p>
+                        <p>Poziom: {{ yourDragons[chosenDragon].level }}</p>
+        
+                        <p>Siła: {{ yourDragons[chosenDragon].str }}</p>
+                        <p>Szybkość: {{ yourDragons[chosenDragon].spd }}</p>
+                        <p>Witalność: {{yourDragons[chosenDragon].vit }}</p>
+                        <p>Obrona: {{ yourDragons[chosenDragon].def }}</p>
+                </div>
+                
+                <div class="dragon-visage" v-bind:style="{backgroundImage:yourDragons[chosenDragon].sprite}"></div>
+                <button class="btn" @click="switchFighter">Smok Walczący</button>
+                <button class="btn" @click="healWounds">Wylecz rany</button>
+                <button class="btn" @click="seeDragonWindow=false">Zamknij</button>
+            </div>
+        </transition>
+    <!-- DRACONOLOGY------------------------------------------------  -->
+    <transition name="fade">
+            <div class="dial-window draconology" v-if="draconologyWindow">
+                <img src="assets/icons/bookmarklet.png" class="book">
+                <h1>Drakonologia</h1>
+                <p>Zbiór wiedzy na temat różnych gatunków smoków.</p>
+                <p>Znajdziesz tu wiele informacji o odkrytych smokach, takich jak ich zachowanie, obszar występowania
+                    czy dieta.
+                </p>
+                
+                <div class="dracon-footer">
+                        <button class="btn" @click="draconologyWindow=false">Zamknij</button>
+                </div>
+                
+            </div>
+    </transition>
+<!-- RESOURCES ------------------------------------------------------- -->
+        <transition name="fade">
+            <div class="dial-window resources" v-if="resourcesWindow">
+                <img src="assets/icons/cool-spices.png" class="pile">
+                <h1>Twoje Zasoby</h1>
+                <p><img class="resource-img" src="assets/icons/cash.png"> Złoto: {{ gold }}</p>
+                <p><img class="resource-img" src="assets/icons/minerals.png">Kryształy: {{ crystals }}</p>
+                <p><img class="resource-img" src="assets/icons/chicken-leg.png">Jedzenie: {{ food }}</p>
+
+                <button class="btn" @click="resourcesWindow=false">Zamknij</button>
+            </div>
+        </transition>
+<!-- EKSPEDYCJE -------------------------------------------------- -->
+
+        <transition name="fade">
+            <div class="dial-window expedition" v-if="expeditionWindow">
+                <h1>Ekspedycje</h1>
+                <img src="assets/icons/summits.png" class="summits">
+                <p>Wyrusz na poszukiwania i znajdź smoka którego możesz oswoić.</p>
+                <div class="map-scr">
+                    <img src="assets/icons/dinosaur-bones.png" alt="bones" class="dinosaur-bones">
+                    <img src="assets/icons/treasure-map.png" alt="spine" class="compass">
+                    <div class="map-nav">
+                        <button class="btn">Puszcza Nuc-Nagoon</button>
+                        <button class="btn">Góry Raklang</button>
+                        <button class="btn">Bagna Gantling</button>
+                        <button class="btn">Pustynia Matobi</button>
+                        <button class="btn">Kraina Wielkich Jezior</button>
+                        <button class="btn" @click="expeditionWindow=false">Wróć</button>
+                    </div>
+                    <div class="map"></div>
+                </div>
+            </div>
+        </transition>
+
+            <div class="navbar navbar-right"></div>
+        
+
+            <p>trening</p>
+            <p>tu powstanie opcja rozbudowywania hodowli, np za surowce kupowania ulepszen, pomieszczen
+                budynkow, np miejsc do treningu, szpitala, itp itd. Podziel ekran na kafelki, zamiast umieszczac w nav przyciski.
+                kazdy kafel niech ma swoj obrazek odpowiadający funkcji. np gniazdo i jaja w gniezdzie
+            </p>
+            <button class="btn" @click="breeding=false">Powrót</button>
+        </div>
+    </transition>
+<!-- NEST -------------------------------------------------------------- -->
+        <transition name="fade">
+            <div class="dial-window nest" v-if="nestWindow">
+                <!-- <img src="assets/icons/egg-clutch.png" class="eggs"> -->
+                <!-- kombinuj z img i ustawianiem warst, bo dla background nie mozna osobno ustawić opacity -->
+                <h1>Gniazdo</h1>
+                <p>Tu wylęgają się twoje smoki. Smocze potmstwo jest tutaj wychowywane.</p>
+                <div class="nest-wrapper">
+
+                    <div class="nest-nav">
+                        <button class="btn" @click="eggsWindow=!eggsWindow">Jaja</button>
+                        <button class="btn">Wylęgarnia</button>
+    
+                    </div>
+
+                    <div class="nest-screen">
+                        <!-- jaja-------------------- -->
+                        <div class="eggs-window" v-if="eggsWindow">
+                            <p>jajo smoka</p>
+                            <p>jajo smoka</p>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn" @click="nestWindow=false">Wróć</button>
+            </div>
+        </transition>
+
+
+
+
+    </div>
+    <script src="dragons.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
